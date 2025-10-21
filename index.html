@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Responsive Payment Form</title>
+    <style>
+      :root {
+        --bg: #f4f7fb;
+        --card: #ffffff;
+        --accent: #3b82f6;
+        --muted: #6b7280;
+        --text: #111;
+      }
+
+      [data-theme="dark"] {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --accent: #3b82f6;
+        --muted: #94a3b8;
+        --text: #f8fafc;
+      }
+
+      * {
+        box-sizing: border-box;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 60%);
+        color: var(--text);
+        font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial,
+          sans-serif;
+      }
+
+      .wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        flex-direction: column;
+      }
+
+      .theme-toggle {
+        margin-bottom: 20px;
+        align-self: flex-end;
+        cursor: pointer;
+        border: 0;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+      }
+
+      .form-card {
+        width: 100%;
+        max-width: 920px;
+        background: var(--card);
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+        padding: 28px;
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .pay-form {
+        padding: 0;
+      }
+      h2 {
+        margin: 0 0 8px 0;
+        font-size: 20px;
+      }
+      p.lead {
+        margin: 0 0 18px 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input[type="text"],
+      input[type="tel"],
+      input[type="month"],
+      input[type="number"],
+      select {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #e6e9ef;
+        background: #fff;
+        font-size: 15px;
+        outline: none;
+      }
+      [data-theme="dark"] input {
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: #f8fafc;
+      }
+      input:focus {
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.12);
+        border-color: var(--accent);
+      }
+
+      .row {
+        display: flex;
+        gap: 12px;
+      }
+      .col {
+        flex: 1;
+      }
+
+      .card-preview {
+        background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+        border-radius: 12px;
+        padding: 18px;
+        color: #fff;
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .card-number {
+        letter-spacing: 3px;
+        font-weight: 600;
+        font-size: 18px;
+      }
+      .card-name {
+        font-size: 14px;
+        text-transform: uppercase;
+      }
+
+      .pay-btn {
+        display: inline-block;
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 10px;
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        margin-top: 6px;
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.18);
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      @media (max-width: 880px) {
+        .form-card {
+          grid-template-columns: 1fr;
+          max-width: 520px;
+          padding: 20px;
+        }
+        .card-preview {
+          order: -1;
+          margin-bottom: 8px;
+        }
+      }
+
+      .footer {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 12px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <button class="theme-toggle" id="themeBtn">🌙 Dark Mode</button>
+
+      <div class="form-card" role="region" aria-label="Payment form">
+        <form class="pay-form" novalidate>
+          <h2>Secure Payment</h2>
+          <p class="lead">
+            Enter your card details. This is a static demo — no JavaScript
+            required.
+          </p>
+
+          <div class="field">
+            <label for="amount">Amount</label>
+            <input
+              type="text"
+              id="amount"
+              name="amount"
+              placeholder="e.g. ₹499.00"
+            />
+          </div>
+
+          <div class="field">
+            <label for="cardnumber">Card Number</label>
+            <input
+              class="card-number-input"
+              type="text"
+              id="cardnumber"
+              name="cardnumber"
+              placeholder="1234 5678 9012 3456"
+              maxlength="19"
+              pattern="[0-9 ]{13,19}"
+              required
+            />
+            <div class="hint">
+              Enter numbers only (spaces allowed). This demo does not submit
+              anywhere.
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col field">
+              <label for="exp">Expiry</label>
+              <input type="month" id="exp" name="exp" />
+            </div>
+            <div class="col field">
+              <label for="cvv">CVV</label>
+              <input
+                type="tel"
+                id="cvv"
+                name="cvv"
+                placeholder="123"
+                maxlength="4"
+                pattern="[0-9]{3,4}"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="name">Cardholder Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Full name"
+              required
+            />
+          </div>
+
+          <button type="submit" class="pay-btn">Pay Now</button>
+          <div class="footer">
+            This is a static HTML/CSS mock — integrate with your payment gateway
+            for live payments.
+          </div>
+        </form>
+
+        <aside class="card-preview" aria-hidden="true">
+          <div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <div
+                style="
+                  width: 48px;
+                  height: 36px;
+                  border-radius: 6px;
+                  background: linear-gradient(
+                    180deg,
+                    #ffd 0%,
+                    rgba(255, 255, 255, 0.35) 100%
+                  );
+                  opacity: 0.95;
+                "
+              ></div>
+              <div style="font-weight: 700; letter-spacing: 1px">VISA</div>
+            </div>
+
+            <div style="margin-top: 18px">
+              <div class="card-number">1234 5678 9012 3456</div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-top: 12px;
+                "
+              >
+                <div>
+                  <div style="font-size: 11px; opacity: 0.9">CARDHOLDER</div>
+                  <div class="card-name">FULL NAME</div>
+                </div>
+                <div>
+                  <div style="font-size: 11px; opacity: 0.9">EXPIRES</div>
+                  <div class="card-name">MM/YY</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="font-size: 12px; opacity: 0.9">Secure • Encrypted</div>
+        </aside>
+      </div>
+    </div>
+    <script>
+      const btn = document.getElementById("themeBtn");
+      btn.addEventListener("click", () => {
+        const body = document.body;
+        const dark = body.getAttribute("data-theme") === "dark";
+        if (dark) {
+          body.removeAttribute("data-theme");
+          btn.textContent = "🌙";
+        } else {
+          body.setAttribute("data-theme", "dark");
+          btn.textContent = "☀️";
+        }
+      });
+    </script>
+  </body>
+</html>
